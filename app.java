@@ -14,8 +14,8 @@ public class app {
             
             String rawStates = txtFileReader.nextLine();
             String rawInputAl = txtFileReader.nextLine();
-            // String firstMarker = txtFileReader.nextLine(); 
-            // String secondMarker = txtFileReader.nextLine();
+            String firstMarker = txtFileReader.nextLine(); 
+            String secondMarker = txtFileReader.nextLine();
             String rawStackAl = txtFileReader.nextLine();
             int numOfTransitions = txtFileReader.nextInt();
 
