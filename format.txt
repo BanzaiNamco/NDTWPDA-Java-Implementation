@@ -5,7 +5,7 @@ $      //first marker
 Z,a   //stack symbols
 4     //number of transitions
 A,a,ε,a,A   //Current state, input, pop symbol, push symbol, dest state
-A,ε,ε,ε,A   //(A,λ,λ) -> (A,λ)
+A,ε,ε,ε,A   //USE ε for lambda (A,λ,λ) -> (A,λ) 
 B,b,a,ε,A   //(B,b,a) -> (B,λ)
 B,ε,Z,ε,C   //(B,λ,Z) -> (B,λ)
 A   //init state
