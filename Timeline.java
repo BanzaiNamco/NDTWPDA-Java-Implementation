@@ -38,17 +38,31 @@ public class Timeline {
         if(!t.pushSymbol.equals("ε"))
             this.stack.add(t.pushSymbol);
         
-        if(!t.inputSymbol.equals("ε"))
-            this.head++;
+        if(!t.inputSymbol.equals("ε")) {
+            switch(t.direction) {
+                case "L": 
+                    if(this.head > 0) 
+                        this.head--; 
+                    break;
+                case "R": 
+                    this.head++; 
+                    break;
+                case "S": 
+                    // Stay in place, no adjustment needed.
+                    break;
+                default: 
+                    throw new IllegalArgumentException("Invalid direction: " + t.direction);
+            }
+        }
     }
 
-    public String peekStack(){
+    public String peekStack() {
         if(this.stack.size() == 0)
             return "ε";
         return this.stack.get(this.stack.size() - 1);
     }
 
-    public String pop(){
+    public String pop() {
         return this.stack.remove(this.stack.size() - 1);
     }
 }

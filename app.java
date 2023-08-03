@@ -6,11 +6,11 @@ import java.util.Scanner;
 
 public class app {
     public static void main(String[] args) {
-        //get input
+
+        // Read machine definition file
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        try{
-            Scanner txtFileReader = new Scanner(new File("./STALGCMMP/test.txt"), "UTF-8");            
-            
+        try {
+            Scanner txtFileReader = new Scanner(new File("./csg.txt"), "UTF-8");
             
             String rawStates = txtFileReader.nextLine();
             String rawInputAl = txtFileReader.nextLine();
@@ -22,7 +22,7 @@ public class app {
             txtFileReader.nextLine();
             ArrayList<Transition> transitions = new ArrayList<>();
 
-            for(int i = 0; i < numOfTransitions; i++){
+            for(int i = 0; i < numOfTransitions; i++) {
                 String rawTransition = txtFileReader.nextLine();
                 String[] transition = rawTransition.split(",");
     
@@ -31,7 +31,8 @@ public class app {
                 String stackSymbolToPop = transition[2];
                 String stackSymbolToPush = transition[3];
                 String nextState = transition[4];
-                transitions.add(new Transition(currentState, inputSymbol, stackSymbolToPop, stackSymbolToPush, nextState));
+                String direction = transition[5];
+                transitions.add(new Transition(currentState, inputSymbol, stackSymbolToPop, stackSymbolToPush, nextState, direction));
             }
 
             String initialState = txtFileReader.nextLine();
@@ -44,20 +45,19 @@ public class app {
             String stackAlphabet[] = rawStackAl.split(",");
 
             PDA pda = new PDA(states, transitions, inputAlphabet, stackAlphabet, initialState, firstStackSymbol, finalState);
+            String input = "aabbcc";
             
-            pda.init("aabb");
-            
-            pda.nextStep();
-            pda.nextStep();
-            pda.nextStep();
-            pda.nextStep();
-            pda.nextStep();
-            pda.nextStep();
+            autoRun(pda, input);
 
-        } catch (Exception e){
+        } catch(Exception e) {
             System.out.println(e);
         }
-        //get transitions
-        // Transition t1 = new Transition("q0", 'Σ', 'Γ*', 'Γ*', 'q1');
+    }
+
+    public static void autoRun(PDA pda, String input) {
+        pda.init(input);
+        while(pda.nextStep() == 0) {
+            pda.nextStep();
+        }
     }
 }

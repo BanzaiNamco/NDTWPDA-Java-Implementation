@@ -1,0 +1,13 @@
+A,B,C
+a,b
+$
+@
+Z,a
+4
+A,a,ε,a,A,R
+A,ε,ε,ε,B,R
+B,b,a,ε,B,R
+B,ε,Z,ε,C,R
+A
+Z
+C

@@ -8,6 +8,7 @@ public class Transition {
     public final String popSymbol;
     public final String pushSymbol;
     public final String nextState;
+    public final String direction;
 
     //(Q, Σ, Γ, δ, q0, Z0, F)
     //δ = (Q, Σ, Γ*) -> P(Q, Γ*)
@@ -16,15 +17,17 @@ public class Transition {
                         String inputSymbol, 
                         String stackSymbolToPop, 
                         String stackSymbolToPush, 
-                        String nextState) {
+                        String nextState,
+                        String direction ) {
         this.currentState = currentState;
         this.nextState = nextState;
         this.inputSymbol = inputSymbol;
         this.popSymbol = stackSymbolToPop;
         this.pushSymbol = stackSymbolToPush;
+        this.direction = direction;
     }
 
-    public Boolean isTransition(String currentState, String inputSymbol, String topOftheStack){
+    public Boolean isTransition(String currentState, String inputSymbol, String topOftheStack) {
         Boolean correctState = this.currentState.equals(currentState);
         Boolean correctInput = this.inputSymbol.equals(inputSymbol) || this.inputSymbol.equals("ε");
         Boolean correctPop = this.popSymbol.equals(topOftheStack) || this.popSymbol.equals("ε");
@@ -32,5 +35,4 @@ public class Transition {
             return correctState && correctInput && correctPop;
         return false;    
     }
-
 }
