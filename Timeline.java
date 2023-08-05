@@ -20,17 +20,17 @@ public class Timeline {
         this.head = timeline.head;
     }
 
-    public Timeline(Timeline timeline, Transition t) {
+    public Timeline(Timeline timeline, Transition t, int inputlength) {
         this.currState = timeline.currState;
         this.stack = new ArrayList<>();
         for(String s : timeline.stack)
             this.stack.add(s);
         this.head = timeline.head;
 
-        nextStep(t);
+        nextStep(t, inputlength);
     }
 
-    public void nextStep(Transition t) {
+    public void nextStep(Transition t, int inputlength) {
         this.currState = t.nextState;
         if(!t.popSymbol.equals("ε"))
             this.pop();
@@ -38,22 +38,15 @@ public class Timeline {
         if(!t.pushSymbol.equals("ε"))
             this.stack.add(t.pushSymbol);
         
-        if(!t.inputSymbol.equals("ε")) {
-            switch(t.direction) {
-                case "L": 
-                    if(this.head > 0) 
-                        this.head--; 
-                    break;
-                case "R": 
-                    this.head++; 
-                    break;
-                case "S": 
-                    // Stay in place, no adjustment needed.
-                    break;
-                default: 
-                    throw new IllegalArgumentException("Invalid direction: " + t.direction);
-            }
+        if(!t.inputSymbol.equals("ε")){
+            if(t.direction.equals("L"))
+                this.head--;
+            else if(t.direction.equals("R"))
+                this.head++;
+            else if(t.direction.equals("S"))
+                ; // Do nothing
         }
+        
     }
 
     public String peekStack() {

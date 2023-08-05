@@ -5,9 +5,9 @@ $       // Start marker
 Z,a     // Stack symbols
 4       // Number of transitions
 A,a,ε,a,A,R    // Current state, input, pop symbol, push symbol, destination state, direction to move input head (R - right, L - left, S - stay)
-A,ε,ε,ε,A,R    // USE ε for lambda (A,λ,λ) -> (A,λ) 
-B,b,a,ε,A,R    // (B,b,a) -> (B,λ)
-B,ε,Z,ε,C,R    // (B,λ,Z) -> (B,λ)
+A,ε,ε,ε,A,R    // USE ε for lambda (A,λ,λ) -> (A,λ,R)
+B,b,a,ε,A,R    // (B,b,a) -> (B,λ,R)
+B,@,Z,ε,C,S    // (B,λ,Z) -> (B,λ,S)
 A    // Initial state
 Z    // Initial stack symbol
 C    // Final state
