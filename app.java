@@ -12,7 +12,7 @@ public class app {
         // Read machine definition file
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
         try {
-            Scanner txtFileReader = new Scanner(new File("./STALGCMMP/csg.txt"), "UTF-8");
+            Scanner txtFileReader = new Scanner(new File("csg.txt"), "UTF-8");
             
             String rawStates = txtFileReader.nextLine();
             String rawInputAl = txtFileReader.nextLine();
