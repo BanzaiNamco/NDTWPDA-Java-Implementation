@@ -55,7 +55,7 @@ public class PDA {
         stack.add(firstStackSymbol);
 
         // Create the original timeline 
-        Timeline timeline = new Timeline(initialState, stack, 1);
+        Timeline timeline = new Timeline(initialState, stack, 0);
 
         // Do a reboot of the timelines
         timelines.clear();
@@ -102,6 +102,7 @@ public class PDA {
                 // Check if timeline is accepted (reached final state, stack is empty, and input has been fully read)
                 if(newTimeline.currState.equals(finalState) && newTimeline.stack.isEmpty() && (newTimeline.head == tape.length()-1)) {
                     // Return 1 if input is accepted
+                    System.out.println(newTimeline.head);
                     System.out.println("Input accepted");
                     timelines.clear();
                     timelines.add(newTimeline);
