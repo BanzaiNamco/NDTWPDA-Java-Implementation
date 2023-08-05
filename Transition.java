@@ -27,12 +27,11 @@ public class Transition {
         this.direction = direction;
     }
 
+    //get the head and compare with the transition direction
     public Boolean isTransition(String currentState, String inputSymbol, String topOftheStack) {
         Boolean correctState = this.currentState.equals(currentState);
         Boolean correctInput = this.inputSymbol.equals(inputSymbol) || this.inputSymbol.equals("ε");
         Boolean correctPop = this.popSymbol.equals(topOftheStack) || this.popSymbol.equals("ε");
-        if(!topOftheStack.equals("ε"))
-            return correctState && correctInput && correctPop;
-        return false;    
+        return correctState && correctInput && correctPop;
     }
 }

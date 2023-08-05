@@ -8,47 +8,54 @@ public class PDA {
     
     // Variables to store TWPDA machine definition
     public String input;
-    public String states[];
     public ArrayList<Transition> transitions;
-    public String inputAlphabet[];
-    public String stackAlphabet[];
-    public String initialState;
     public String firstStackSymbol;
-    // public ArrayList<String> finalStates;
+    public String initialState;
     public String finalState;
-    
+    public String startMarker;
+    public String endMarker;
+
+    public String tape;
+
     // Variables we need to keep track of during execution
     // public int head;
     // private String currentState;
     // public Stack<String> stack;
-    Queue<Timeline> timelines = new LinkedList<>();
+    public Queue<Timeline> timelines = new LinkedList<>();
 
-    public PDA( String states[],
-                ArrayList<Transition> transitions, 
-                String inputAlphabet[], 
-                String stackAlphabet[], 
+    public PDA( ArrayList<Transition> transitions, 
                 String initialState,
                 String firstStackSymbol, 
-                String finalState )
-            //  ArrayList<String> finalStates)
+                String finalState ,
+                String startMarker,
+                String endMarker) {
         {
-        // head = 0;
-        this.states = states;
         this.transitions = transitions;
-        this.inputAlphabet = inputAlphabet;
-        this.stackAlphabet = stackAlphabet;
         this.initialState = initialState;
         this.firstStackSymbol = firstStackSymbol;
         this.finalState = finalState;
+        this.startMarker = startMarker;
+        this.endMarker = endMarker;
+        }
+    }
+
+    public PDA( PDA pda) {
+        transitions = pda.transitions;
+        initialState = pda.initialState;
+        firstStackSymbol = pda.firstStackSymbol;
+        finalState = pda.finalState;
+        startMarker = pda.startMarker;
+        endMarker = pda.endMarker;
     }
     
     public void init(String input) {
         this.input = input;
+        this.tape = startMarker + input + endMarker;
         ArrayList<String> stack = new ArrayList<>();
         stack.add(firstStackSymbol);
 
         // Create the original timeline 
-        Timeline timeline = new Timeline(initialState, stack, 0);
+        Timeline timeline = new Timeline(initialState, stack, 1);
 
         // Do a reboot of the timelines
         timelines.clear();
@@ -72,28 +79,32 @@ public class PDA {
             // Get all possible transitions of current timeline
             ArrayList<Transition> possibleTransitions = getPossibleTransitions(timeline);
             
-            System.out.println("Possible Transitions: " + possibleTransitions.size());
+            System.out.println("\nPossible Transitions: " + possibleTransitions.size());
 
             if(timeline.head < input.length())
-                System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + String.valueOf(input.charAt(timeline.head)) + " " + timeline.stack);
+                System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + String.valueOf(tape.charAt(timeline.head)) + " " + timeline.stack);
             else            
                 System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + timeline.head + " " + timeline.stack);
             
+            if(tape.charAt(timeline.head) == 'ε')
+                timeline.head++;
             System.out.println("Head: " + timeline.head);
-            System.out.println(input);
+            System.out.println(tape);
 
             // For each possible transition
             for(Transition t : possibleTransitions) {
-                System.out.println("Transition: " + t.currentState + " " + t.inputSymbol + " " + t.popSymbol + " " + t.pushSymbol + " " + t.nextState);
+                System.out.println("Transition: " + t.currentState + " " + t.inputSymbol + " " + t.popSymbol + " " + t.pushSymbol + " " + t.nextState + " " + t.direction);
 
                 // Create a new timeline that implements the transition
-                Timeline newTimeline = new Timeline(timeline, t);
+                Timeline newTimeline = new Timeline(timeline, t, tape.length());
                 System.out.println("New Timeline: " + newTimeline.currState + " " + newTimeline.head + " " + newTimeline.stack);
 
                 // Check if timeline is accepted (reached final state, stack is empty, and input has been fully read)
-                if(newTimeline.currState.equals(finalState) && newTimeline.stack.isEmpty() && (newTimeline.head == input.length())) {
+                if(newTimeline.currState.equals(finalState) && newTimeline.stack.isEmpty() && (newTimeline.head == tape.length()-1)) {
                     // Return 1 if input is accepted
                     System.out.println("Input accepted");
+                    timelines.clear();
+                    timelines.add(newTimeline);
                     return 1;
                 }
 
@@ -119,21 +130,23 @@ public class PDA {
         //get all possible transitions from the current state
         ArrayList<Transition> possibleTransitions = new ArrayList<>();
         for(Transition t : transitions) {
-            if(timeline.head == input.length()){
+           if(tape.charAt(timeline.head) == 'ε'){
                 if(t.isTransition(  timeline.currState, 
-                                    "ε", 
+                                    String.valueOf(tape.charAt(timeline.head)), 
+                                    timeline.peekStack()) ||
+                                    t.isTransition(  timeline.currState,
+                                    String.valueOf(tape.charAt(timeline.head+1)),
                                     timeline.peekStack())){
                     possibleTransitions.add(t);
                 }
-            } else {
+            }else{
                 if(t.isTransition(  timeline.currState, 
-                                    String.valueOf(input.charAt(timeline.head)), 
+                                    String.valueOf(tape.charAt(timeline.head)), 
                                     timeline.peekStack())){
                     possibleTransitions.add(t);
                 }
             }
         }
-        
         return possibleTransitions;
     }
 }
