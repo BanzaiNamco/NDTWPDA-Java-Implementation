@@ -84,8 +84,7 @@ public class PDA {
             // else            
             //     System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + timeline.head + " " + timeline.stack);
             
-            if(tape.charAt(timeline.head) == 'ε')
-                timeline.head++;
+            
             // System.out.println("Head: " + timeline.head);
             // System.out.println(tape);
 
