@@ -1,0 +1,14 @@
+A,B
+a,b,c
+#
+$
+Z,a,b
+2
+A,#,ε,A,ε,1
+A,ε,ε,A,ε,0
+A
+Z
+B
+
+//This machine infinitely loops from state A to state A
+//Essentially, it simulates the state (q', y', p') = (q, y, p)

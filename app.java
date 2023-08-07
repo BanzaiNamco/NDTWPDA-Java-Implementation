@@ -10,9 +10,8 @@ public class app {
     public static void main(String[] args) {
 
         // Read machine definition file
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         try {
-            Scanner txtFileReader = new Scanner(new File("csg.txt"), "UTF-8");
+            Scanner txtFileReader = new Scanner(new File("machine.txt"), "UTF-8");
             
             String rawStates = txtFileReader.nextLine();
             String rawInputAl = txtFileReader.nextLine();
@@ -31,37 +30,28 @@ public class app {
                 String currentState = transition[0];
                 String inputSymbol = transition[1];
                 String stackSymbolToPop = transition[2];
-                String stackSymbolToPush = transition[3];
-                String nextState = transition[4];
+                String nextState = transition[3];
+                String stackSymbolToPush = transition[4];
                 String direction = transition[5];
                 transitions.add(new Transition(currentState, inputSymbol, stackSymbolToPop, stackSymbolToPush, nextState, direction));
             }
 
             String initialState = txtFileReader.nextLine();
             String firstStackSymbol = txtFileReader.nextLine();
-            String finalState = txtFileReader.nextLine();
+            String rawFinalStates = txtFileReader.nextLine();
             txtFileReader.close();
 
+            String finalStates[] = rawFinalStates.split(",");
             String states[] = rawStates.split(",");
             String inputAlphabet[] = rawInputAl.split(",");
             String stackAlphabet[] = rawStackAl.split(",");
 
-            PDA pda = new PDA(transitions, initialState, firstStackSymbol, finalState, firstMarker, secondMarker);
-            String input = "aabbcc";
+            PDA pda = new PDA(transitions, initialState, firstStackSymbol, finalStates, firstMarker, secondMarker);
             
-            autoRun(pda, input);
-
             Controller controller = new Controller(pda);
 
         } catch(Exception e) {
             System.out.println(e);
-        }
-    }
-
-    public static void autoRun(PDA pda, String input) {
-        pda.init(input);
-        while(pda.nextStep() == 0) {
-            pda.nextStep();
         }
     }
 }
