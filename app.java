@@ -10,9 +10,8 @@ public class app {
     public static void main(String[] args) {
 
         // Read machine definition file
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         try {
-            Scanner txtFileReader = new Scanner(new File("./STALGCMMP/csg.txt"), "UTF-8");
+            Scanner txtFileReader = new Scanner(new File("machine.txt"), "UTF-8");
             
             String rawStates = txtFileReader.nextLine();
             String rawInputAl = txtFileReader.nextLine();
@@ -31,8 +30,8 @@ public class app {
                 String currentState = transition[0];
                 String inputSymbol = transition[1];
                 String stackSymbolToPop = transition[2];
-                String stackSymbolToPush = transition[3];
-                String nextState = transition[4];
+                String nextState = transition[3];
+                String stackSymbolToPush = transition[4];
                 String direction = transition[5];
                 transitions.add(new Transition(currentState, inputSymbol, stackSymbolToPop, stackSymbolToPush, nextState, direction));
             }

@@ -69,7 +69,6 @@ public class PDA {
     public int nextStep() {
         // System.out.println("\n------------------------------------\n");
         Queue<Timeline> newTimelines = new LinkedList<>();
-        int halt = 0;
         // For each active timeline
         while(!timelines.isEmpty()) {
             // Get the current timeline
@@ -91,7 +90,6 @@ public class PDA {
             // System.out.println(tape);
 
             // For each possible transition
-            halt = 0;
             for(Transition t : possibleTransitions) {
                 // System.out.println("Transition: " + t.currentState + " " + t.inputSymbol + " " + t.popSymbol + " " + t.pushSymbol + " " + t.nextState + " " + t.direction);
 
@@ -111,16 +109,16 @@ public class PDA {
                 }
 
                 //if the next state = current state, that implies that the transition is a loop and the machine should halt
-                if(timeline.head == newTimeline.head && timeline.stack.equals(newTimeline.stack) && timeline.currState.equals(newTimeline.currState)){
-                    halt++;
+                Boolean halt = timeline.head == newTimeline.head && timeline.stack.equals(newTimeline.stack) && timeline.currState.equals(newTimeline.currState);
+                if(!halt){
+                    // Add the new timeline to the temp variable
+                    newTimelines.add(newTimeline);
                 }
 
-                // Add the new timeline to the temp variable
-                newTimelines.add(newTimeline);
             }
         }
         
-        if(newTimelines.size() == 0 || halt == newTimelines.size()) {
+        if(newTimelines.size() == 0) {
             // If there are no timelines left, then the input is not accepted
             // System.out.println("Input not accepted");
             return -1;

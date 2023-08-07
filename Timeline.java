@@ -39,11 +39,11 @@ public class Timeline {
             this.stack.add(t.pushSymbol);
         
         if(!t.inputSymbol.equals("ε")){
-            if(t.direction.equals("L"))
+            if(t.direction.equals("-1"))
                 this.head--;
-            else if(t.direction.equals("R"))
+            else if(t.direction.equals("1"))
                 this.head++;
-            else if(t.direction.equals("S"))
+            else if(t.direction.equals("0"))
                 ; // Do nothing
         }
         

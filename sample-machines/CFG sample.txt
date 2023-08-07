@@ -1,0 +1,16 @@
+A,B,C
+a,b
+$
+@
+Z,a
+5
+A,$,ε,A,ε,1
+A,a,ε,A,a,1
+A,ε,ε,B,ε,1
+B,b,a,B,ε,1
+B,ε,Z,C,ε,1
+A
+Z
+C
+
+//This machine accepts the language L = {a^n b^n | n >= 0}

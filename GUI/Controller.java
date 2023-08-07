@@ -48,9 +48,10 @@ public class Controller {
         view.lambda.addActionListener(e -> {
             view.inputArea.setText("ε");
         });
-
+        
         view.nextButton.addActionListener(e -> {
-            if(status != 1){
+            if(status == 0){
+                view.statusLabel.setText("Status: Working");
                 status = pda.nextStep();
                 updateView();
             }
@@ -63,6 +64,7 @@ public class Controller {
     }
 
     public void autoRun(PDA pda, String input) {
+        view.inputLabel.setText("Input: " + input);
         pda.init(input);
         while(status == 0) {
             status = pda.nextStep();
