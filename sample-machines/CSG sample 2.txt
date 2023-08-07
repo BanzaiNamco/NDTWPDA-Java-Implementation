@@ -1,0 +1,22 @@
+A,B,C,D,E,F
+a,b,c
+#
+$
+Z,a,b
+11
+A,#,ε,A,ε,1
+A,a,ε,A,a,1
+A,ε,ε,B,ε,0
+B,b,a,B,ε,1
+B,c,ε,C,ε,-1
+C,b,ε,C,ε,-1
+C,a,ε,D,ε,1
+D,b,ε,D,b,1
+D,ε,ε,E,ε,0
+E,c,b,E,ε,1
+E,ε,Z,F,ε,0
+A
+Z
+F
+
+// This machine accepts the language L = {a^n b^n c^n | n >= 1}
