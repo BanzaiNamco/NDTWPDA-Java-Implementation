@@ -70,13 +70,6 @@ public class MainView {
         Dimension prefSize = new Dimension(10, 100);
         Dimension maxSize = new Dimension(10, 100);
         timelinesPanel.add(new Box.Filler(minSize, prefSize, maxSize));
-        
-        ArrayList<String> a = new ArrayList<>();
-        a.add("a");
-        for(int i = 0; i < 20; i++){
-            leafViews.add(new LeafView("q0", "aabbcc", a , 2));
-            timelinesPanel.add(leafViews.get(i));
-        }
 
         //Make the timelines scrollable
         scrollPane = new JScrollPane(timelinesPanel);

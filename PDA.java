@@ -1,6 +1,7 @@
 package STALGCMMP;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -11,29 +12,27 @@ public class PDA {
     public ArrayList<Transition> transitions;
     public String firstStackSymbol;
     public String initialState;
-    public String finalState;
+    // public String finalState;
+    public ArrayList<String> finalStates;
     public String startMarker;
     public String endMarker;
 
     public String tape;
 
-    // Variables we need to keep track of during execution
-    // public int head;
-    // private String currentState;
-    // public Stack<String> stack;
     public Queue<Timeline> timelines = new LinkedList<>();
 
     public PDA( ArrayList<Transition> transitions, 
                 String initialState,
                 String firstStackSymbol, 
-                String finalState ,
+                // String finalState ,
+                String[] finalStates,
                 String startMarker,
                 String endMarker) {
         {
         this.transitions = transitions;
         this.initialState = initialState;
         this.firstStackSymbol = firstStackSymbol;
-        this.finalState = finalState;
+        this.finalStates = new ArrayList<>(Arrays.asList(finalStates));
         this.startMarker = startMarker;
         this.endMarker = endMarker;
         }
@@ -43,7 +42,7 @@ public class PDA {
         transitions = pda.transitions;
         initialState = pda.initialState;
         firstStackSymbol = pda.firstStackSymbol;
-        finalState = pda.finalState;
+        finalStates = pda.finalStates;
         startMarker = pda.startMarker;
         endMarker = pda.endMarker;
     }
@@ -68,9 +67,9 @@ public class PDA {
     // Return 1 if a timeline has been accepted
     // Return -1 if no timelines are left
     public int nextStep() {
-        System.out.println("\n------------------------------------\n");
+        // System.out.println("\n------------------------------------\n");
         Queue<Timeline> newTimelines = new LinkedList<>();
-       
+        int halt = 0;
         // For each active timeline
         while(!timelines.isEmpty()) {
             // Get the current timeline
@@ -79,34 +78,41 @@ public class PDA {
             // Get all possible transitions of current timeline
             ArrayList<Transition> possibleTransitions = getPossibleTransitions(timeline);
             
-            System.out.println("\nPossible Transitions: " + possibleTransitions.size());
+            // System.out.println("\nPossible Transitions: " + possibleTransitions.size());
 
-            if(timeline.head < input.length())
-                System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + String.valueOf(tape.charAt(timeline.head)) + " " + timeline.stack);
-            else            
-                System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + timeline.head + " " + timeline.stack);
+            // if(timeline.head < input.length())
+            //     System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + String.valueOf(tape.charAt(timeline.head)) + " " + timeline.stack);
+            // else            
+            //     System.out.println("\n\nCurrent Timeline: " + timeline.currState + " " + timeline.head + " " + timeline.stack);
             
             if(tape.charAt(timeline.head) == 'ε')
                 timeline.head++;
-            System.out.println("Head: " + timeline.head);
-            System.out.println(tape);
+            // System.out.println("Head: " + timeline.head);
+            // System.out.println(tape);
 
             // For each possible transition
+            halt = 0;
             for(Transition t : possibleTransitions) {
-                System.out.println("Transition: " + t.currentState + " " + t.inputSymbol + " " + t.popSymbol + " " + t.pushSymbol + " " + t.nextState + " " + t.direction);
+                // System.out.println("Transition: " + t.currentState + " " + t.inputSymbol + " " + t.popSymbol + " " + t.pushSymbol + " " + t.nextState + " " + t.direction);
 
                 // Create a new timeline that implements the transition
                 Timeline newTimeline = new Timeline(timeline, t, tape.length());
-                System.out.println("New Timeline: " + newTimeline.currState + " " + newTimeline.head + " " + newTimeline.stack);
+                // System.out.println("New Timeline: " + newTimeline.currState + " " + newTimeline.head + " " + newTimeline.stack);
 
                 // Check if timeline is accepted (reached final state, stack is empty, and input has been fully read)
-                if(newTimeline.currState.equals(finalState) && newTimeline.stack.isEmpty() && (newTimeline.head == tape.length()-1)) {
+                // if(newTimeline.currState.equals(finalState) && newTimeline.stack.isEmpty() && (newTimeline.head == tape.length()-1)) {
+                if(finalStates.contains(newTimeline.currState) && newTimeline.stack.isEmpty() && (newTimeline.head == tape.length()-1)) {
                     // Return 1 if input is accepted
-                    System.out.println(newTimeline.head);
-                    System.out.println("Input accepted");
+                    // System.out.println(newTimeline.head);
+                    // System.out.println("Input accepted");
                     timelines.clear();
                     timelines.add(newTimeline);
                     return 1;
+                }
+
+                //if the next state = current state, that implies that the transition is a loop and the machine should halt
+                if(timeline.head == newTimeline.head && timeline.stack.equals(newTimeline.stack) && timeline.currState.equals(newTimeline.currState)){
+                    halt++;
                 }
 
                 // Add the new timeline to the temp variable
@@ -114,16 +120,16 @@ public class PDA {
             }
         }
         
-        if(newTimelines.size() == 0) {
+        if(newTimelines.size() == 0 || halt == newTimelines.size()) {
             // If there are no timelines left, then the input is not accepted
-            System.out.println("Input not accepted");
+            // System.out.println("Input not accepted");
             return -1;
         }
 
         // Add the new timelines to timelines
         timelines.addAll(newTimelines);
 
-        System.out.println("\nGo to next step");
+        // System.out.println("\nGo to next step");
         return 0;
     }
 
