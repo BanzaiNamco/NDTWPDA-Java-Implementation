@@ -64,13 +64,13 @@ public class Controller {
     }
 
     public void autoRun(PDA pda, String input) {
-        view.inputLabel.setText("Input: " + input);
+        view.inputLabel.setText("Input: " + pda.tape);
         pda.init(input);
         while(status == 0) {
             status = pda.nextStep();
             updateView();        
         }
-        updateView();        
+        updateView();
     }
 
     public void updateView(){
