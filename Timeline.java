@@ -38,14 +38,12 @@ public class Timeline {
         if(!t.pushSymbol.equals("ε"))
             this.stack.add(t.pushSymbol);
         
-        if(!t.inputSymbol.equals("ε")){
-            if(t.direction.equals("-1"))
-                this.head--;
-            else if(t.direction.equals("1"))
-                this.head++;
-            else if(t.direction.equals("0"))
-                ; // Do nothing
-        }
+        if(t.direction.equals("-1"))
+            this.head--;
+        else if(t.direction.equals("1"))
+            this.head++;
+        else if(t.direction.equals("0"))
+            ; // Do nothing
         
     }
 
