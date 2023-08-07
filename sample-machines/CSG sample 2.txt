@@ -19,4 +19,4 @@ A
 Z
 F
 
-//this machine accepts the language L = {a^n b^n c^n | n >= 1}
+// This machine accepts the language L = {a^n b^n c^n | n >= 1}
