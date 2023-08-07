@@ -87,6 +87,9 @@ public class PDA {
             
             // System.out.println("Head: " + timeline.head);
             // System.out.println(tape);
+            if(input.equals("ε") && tape.charAt(timeline.head) == 'ε')
+                timeline.head++;
+            // System.out.println("Input Symbol: " + String.valueOf(tape.charAt(timeline.head)) + " " + String.valueOf(tape.charAt(timeline.head+1)));
 
             // For each possible transition
             for(Transition t : possibleTransitions) {
